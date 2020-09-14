@@ -1,2 +1,2 @@
 # CompareWeather
-This is a UI and API comparator framework. 
+This is a UI-API comparator framework. 
