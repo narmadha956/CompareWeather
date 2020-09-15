@@ -14,7 +14,7 @@ public class HomePage {
     @FindBy(id="h_sub_menu")
     public WebElement subMenu;
 
-    @FindBy(id="//a[text()='WEATHER']")
+    @FindBy(xpath="//*[@class='topnav_cont']/a[contains(text(),'WEATHER')]")
     public WebElement weatherOption;
 
 }
