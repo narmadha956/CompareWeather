@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class MapPage {
 
     public MapPage(WebDriver driver) {
@@ -16,5 +18,11 @@ public class MapPage {
 
     @FindBy(id="temperatureContainer")
     public WebElement countryIcon;
+
+    @FindBy(className = "cityText")
+    public List<WebElement> citiesDisplayed;
+
+    @FindBy(xpath = "//b[contains(text(),'Temp in Degrees')]")
+    public WebElement icon;
 
 }
