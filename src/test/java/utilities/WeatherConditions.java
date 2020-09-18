@@ -1,4 +1,4 @@
-package builders;
+package utilities;
 
 public class WeatherConditions {
 
