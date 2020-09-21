@@ -1,5 +1,8 @@
 package tests;
 
+import com.epam.reportportal.service.ReportPortal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.event.Level;
 import org.testng.annotations.AfterSuite;
 import utilities.ConfigDetails;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -11,6 +14,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -75,6 +81,25 @@ public class BaseTest {
     {
         driver.close();
         driver.quit();
+    }
+
+    public static synchronized void attachToRP(Level level, String response) {
+        try {
+
+            File file = new File(".//src//test//resources//Request.txt");
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file);
+            fw.write(response);
+            fw.close();
+            String fileName = "Failed_RequestResponse";
+            ReportPortal.emitLog(fileName, level.toString(), new Date(), file);
+            file.delete();
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
