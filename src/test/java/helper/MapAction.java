@@ -1,4 +1,4 @@
-package Handler;
+package helper;
 
 import com.epam.reportportal.service.ReportPortal;
 import org.openqa.selenium.*;

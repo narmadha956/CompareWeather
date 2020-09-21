@@ -1,21 +1,17 @@
 package tests;
 
-import Handler.HomeAction;
-import Handler.MapAction;
-import Handler.APIHandler;
-import Handler.WeatherBuilder;
+import helper.HomeAction;
+import helper.MapAction;
+import helper.APIHandler;
 import com.epam.reportportal.service.ReportPortal;
 import io.restassured.response.Response;
-import org.junit.Assert;
 import org.testng.ITest;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 import utilities.ConfigDetails;
 import org.testng.annotations.Test;
 
-import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;

@@ -1,6 +1,5 @@
-package Handler;
+package helper;
 
-import com.epam.reportportal.service.ReportPortal;
 import io.restassured.RestAssured;
 import io.restassured.config.LogConfig;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -12,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
