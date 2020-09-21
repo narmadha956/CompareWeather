@@ -1,5 +1,6 @@
 package Handler;
 
+import com.epam.reportportal.service.ReportPortal;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -7,6 +8,7 @@ import org.testng.Assert;
 import pages.MapPage;
 
 import java.io.File;
+import java.util.Date;
 
 public class MapAction {
     WebDriver driver;
@@ -18,13 +20,19 @@ public class MapAction {
     }
 
     public void searchCity(String city) {
-        MapPage map = new MapPage(driver);
-        map.citySearch.click();
-        map.citySearch.clear();
-        map.citySearch.sendKeys(city);
-        String isChecked = driver.findElement(By.id(city)).getAttribute("checked");
-        if (!isChecked.equalsIgnoreCase("true"))
-            driver.findElement(By.id(city)).click();
+        try {
+            MapPage map = new MapPage(driver);
+            map.citySearch.click();
+            map.citySearch.clear();
+            map.citySearch.sendKeys(city);
+            String isChecked = driver.findElement(By.id(city)).getAttribute("checked");
+            if (!isChecked.equalsIgnoreCase("true"))
+                driver.findElement(By.id(city)).click();
+        }catch(NoSuchElementException ns)
+        {
+            File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            ReportPortal.emitLog("City not present in dropdown","ERROR",new Date(),screenshot);
+        }
     }
 
     public String getCityValue(String cityName, String xpath) {
@@ -34,6 +42,7 @@ public class MapAction {
             city = driver.findElement(By.xpath(".//*[@class='temperatureContainer']/following-sibling::div[@class='cityText'][contains(text(),'" + cityName + "')]"));
         } catch (NoSuchElementException ns) {
             File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            ReportPortal.emitLog("City did not appear on map","ERROR",new Date(),screenshot);
             return "";
         }
         // for(WebElement city : map.citiesDisplayed)
@@ -55,6 +64,7 @@ public class MapAction {
         } else
         {
             File screenshot = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            ReportPortal.emitLog("UI Error","ERROR",new Date(),screenshot);
             return "";
             //      }
         }

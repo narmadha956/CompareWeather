@@ -4,19 +4,24 @@ import Handler.HomeAction;
 import Handler.MapAction;
 import Handler.APIHandler;
 import Handler.WeatherBuilder;
+import com.epam.reportportal.service.ReportPortal;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.testng.ITest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 import utilities.ConfigDetails;
 import org.testng.annotations.Test;
 
 import java.io.StringReader;
+import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Map;
 
-public class CommonTests extends BaseTest{
-    
+public class CommonTests extends BaseTest implements ITest {
+    private ThreadLocal<String> testName = new ThreadLocal<>();
     String uiPage = new String();
     String endpoint = new String();
     ConfigDetails.scenarios[] scenarios = null;
@@ -24,9 +29,10 @@ public class CommonTests extends BaseTest{
     @BeforeClass
     public void initialiseTest()
     {
-         scenarios = runner.getSuite();
-         uiPage = scenarios[0].getUiPage();
-         endpoint = scenarios[0].getEndpoint();
+        driver.get(runner.getBase().getBaseWebsite());
+        scenarios = runner.getSuite();
+        uiPage = scenarios[0].getUiPage();
+        endpoint = scenarios[0].getEndpoint();
 
         HomeAction actions = new HomeAction(driver);
         actions.navigateToPage(uiPage);
@@ -58,8 +64,28 @@ public class CommonTests extends BaseTest{
                 if(apiResponse.statusCode()!=200)
                     softAssert.fail("API returned status "+apiResponse.statusCode()+" for city"+city);
                 if(apiResponse.statusCode()==200 && uiValue!="" )
-                softAssert.assertTrue(varianceLogic(scenario.getVariance(),scenario.getMetric(),apiValue,uiValue),"Variance for"+scenario.getMetric()+" exceeds difference");
+                {
+                    ReportPortal.emitLog("API " +scenario.getMetric()+" is "+apiValue, "INFO", new Date());
+                    ReportPortal.emitLog("UI Value "+scenario.getMetric()+" is "+uiValue, "INFO", new Date());
+                    softAssert.assertTrue(varianceLogic(scenario.getVariance(),scenario.getMetric(),apiValue,uiValue),"Variance for "+scenario.getMetric()+" exceeds allowed limit. Allowed is "+scenario.getVariance());
+                }
             }
         softAssert.assertAll();
+    }
+
+    @BeforeMethod(alwaysRun = true)
+    public void BeforeMethod(Method method, Object[] testData) {
+
+        if (method.getName().equals("comparator")) {
+            String testcaseName = testData[0].toString();
+            testName.set("compare "+testcaseName);
+        } else
+            testName.set(method.getName());
+
+    }
+
+    @Override
+    public String getTestName() {
+        return testName.get();
     }
 }

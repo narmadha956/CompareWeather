@@ -41,7 +41,6 @@ public class BaseTest {
 
         driver =  new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        driver.get(runner.getBase().getBaseWebsite());
         RestAssured.baseURI=(runner.getBase().getBaseAPI());
     }
 
