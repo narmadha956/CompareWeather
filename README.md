@@ -5,7 +5,7 @@ The weather details from UI and API can be compared by running one single comman
 
 ____________________________________________________________________________________________________________________________________________________
 
-#**Configuration Details**
+**Configuration Details**
 
 One single config file to manage all your test needs. 
 
@@ -13,7 +13,7 @@ Add the details of cities and metrics(ex. temperature, humidity) to be tested in
 
 _____________________________________________________________________________________________________________________________________________________
 
-#**Installation Guide**
+**Installation Guide**
 
 git clone repository
 
@@ -21,7 +21,7 @@ install test -Dsurefire.suiteXmlFiles=testng.xml
 
 ______________________________________________________________________________________________________________________________________________________
 
-#**Reporting Guide**
+**Reporting Guide**
 Provide the details of report portal properties in src/test/resources reportportal.properties files
 
 
