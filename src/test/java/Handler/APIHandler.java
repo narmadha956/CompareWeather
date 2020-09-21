@@ -8,12 +8,11 @@ import static io.restassured.RestAssured.given;
 
 public abstract class APIHandler  {
 
-    public static String apiTest(Map<String,String> queryParam, String endpoint, String jsonPath ) {
+    public static Response apiTest(Map<String,String> queryParam, String endpoint ) {
         Response response = given().relaxedHTTPSValidation().queryParams(queryParam)
                 .when().get(endpoint);
-        String temp = response.jsonPath().getString(jsonPath);
 
-        return temp;
+        return response;
     }
 
 }

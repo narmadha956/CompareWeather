@@ -16,27 +16,31 @@ public class HomeAction {
         this.driver=driver;
     }
 
-    public void navigateToWeatherPage()
+    public void navigateToPage(String pageName)
     {
-        int count = 5;
-        while(count>0)
+        if(pageName.equals("weatherPage"))
         {
-        homePageObjects.subMenu.click();
-        try{
-            if(homePageObjects.weatherOption.isDisplayed())
+            int count = 5;
+            while(count>0)
             {
-                homePageObjects.weatherOption.click();
-                return;
+                homePageObjects.subMenu.click();
+                try{
+                    if(homePageObjects.weatherOption.isDisplayed())
+                    {
+                        homePageObjects.weatherOption.click();
+                        return;
+                    }
+                }catch(Exception ns)
+                {
+                    ns.printStackTrace();
+                    WebDriverWait wait = new WebDriverWait(driver, 30);
+                    WebElement submenu = wait.until(
+                            ExpectedConditions.elementToBeClickable(homePageObjects.subMenu));
+                    count--;
+                }
             }
-        }catch(Exception ns)
-        {
-            ns.printStackTrace();
-            WebDriverWait wait = new WebDriverWait(driver, 30);
-            WebElement submenu = wait.until(
-                    ExpectedConditions.elementToBeClickable(homePageObjects.subMenu));
-            count--;
         }
         }
-    }
+
 
 }

@@ -64,13 +64,19 @@ public class ConfigDetails {
         String variance;
         String metric;
 
-        public scenarios(String variance, String metric, String endpoint, String jsonPath, String uiPath) {
+        public scenarios(String variance, String metric, String uiPage, String endpoint, String jsonPath, String uiPath) {
             this.variance = variance;
             this.metric = metric;
+            this.uiPage = uiPage;
             this.endpoint = endpoint;
             this.jsonPath = jsonPath;
             this.uiPath = uiPath;
         }
+
+        String uiPage;
+        String endpoint;
+        String jsonPath;
+        String uiPath;
 
         public String getVariance() {
             return variance;
@@ -86,6 +92,14 @@ public class ConfigDetails {
 
         public void setMetric(String metric) {
             this.metric = metric;
+        }
+
+        public String getUiPage() {
+            return uiPage;
+        }
+
+        public void setUiPage(String uiPage) {
+            this.uiPage = uiPage;
         }
 
         public String getEndpoint() {
@@ -112,9 +126,6 @@ public class ConfigDetails {
             this.uiPath = uiPath;
         }
 
-        String endpoint;
-        String jsonPath;
-        String uiPath;
     }
 
     public static class runner {

@@ -1,5 +1,6 @@
 package tests;
 
+import org.testng.annotations.AfterSuite;
 import utilities.ConfigDetails;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.restassured.RestAssured;
@@ -10,18 +11,14 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
     protected WebDriver driver;
     protected Map<String, String> defaultQueryParams = new HashMap<String, String>();
     protected static ConfigDetails.runner runner;
-    LinkedHashMap<String,String> apiCityValues = new LinkedHashMap<>();
-    LinkedHashMap<String,String> uiCityValues = new LinkedHashMap<>();
 
 
     @BeforeSuite
@@ -49,24 +46,36 @@ public class BaseTest {
     }
 
     @DataProvider(name = "suite")
-    public Object[][] data() {
+    public Iterator<String> data() {
 
-        Object[][] result = new Object[][] {};
         String[] cityNames = runner.getBase().getCityNames();
+        return Arrays.asList(cityNames).iterator();
 
-        for (int i = 0; i < runner.getSuite().length; i++) {
-            result = ArrayUtils.add(result, new Object[] {runner.getSuite()[i],cityNames});
-        }
-
-        return result;
     }
 
     public boolean varianceLogic(String variance, String metric, String apiValue, String uiValue)
     {
-
-
+        try{
+        double apiMeasurement = Double.parseDouble(apiValue);
+        double uiMeasurement = Double.parseDouble(uiValue);
+        if(metric.equals("degree"))
+            apiMeasurement = apiMeasurement - 273.15;
+        int allowed = Integer.parseInt(variance);
+        if(Math.abs(apiMeasurement-uiMeasurement)<=allowed)
+            return true;
+        }catch (NumberFormatException n)
+        {
+            n.printStackTrace();
+            return false;
+        }
         return false;
     }
 
+    @AfterSuite
+    public void tearDown()
+    {
+        driver.close();
+        driver.quit();
+    }
 
 }
